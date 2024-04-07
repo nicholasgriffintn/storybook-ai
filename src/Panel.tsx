@@ -1,28 +1,23 @@
 import React from 'react';
-import { AddonPanel } from '@storybook/components';
-import { useArgs, useParameter } from '@storybook/manager-api';
+import { type API, useArgs, useParameter } from '@storybook/manager-api';
 
 import { PanelContent } from './components/PanelContent';
 import { PARAM_KEY } from './constants';
 
 interface PanelProps {
-  active: boolean;
+  api: API;
 }
 
-export function Panel(props: PanelProps) {
+export const Panel: React.FC<PanelProps> = ({ api }) => {
   const [args] = useArgs();
   const parameters = useParameter(PARAM_KEY, {
     provider: 'openai',
     apiKey: '',
   });
 
-  console.log(parameters);
-
   const { provider, apiKey } = parameters;
 
   return (
-    <AddonPanel {...props}>
-      <PanelContent args={args} provider={provider} apiKey={apiKey} />
-    </AddonPanel>
+    <PanelContent api={api} args={args} provider={provider} apiKey={apiKey} />
   );
-}
+};

@@ -14,7 +14,7 @@
       "require": "./dist/preview.cjs"
     },
     "./preset": "./dist/preset.cjs",
-    "./manager": "./dist/manager.js",
+    "./manager": "./dist/manager.jsx",
     "./package.json": "./package.json"
   },
   "files": [
@@ -31,7 +31,7 @@
       "src/index.ts"
     ],
     "managerEntries": [
-      "src/manager.ts"
+      "src/manager.tsx"
     ],
     "previewEntries": [
       "src/preview.ts"
@@ -45,20 +45,38 @@
   },
   "scripts": {
     "prepare": "pnpm run build",
-    "build": "tsup --config ./tsup.config.ts"
+    "build": "tsup --config ./tsup.config.ts",
+    "build:watch": "pnpm run build -- --watch",
+    "start": "concurrently 'pnpm run build:watch' 'pnpm run storybook --quiet'",
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
-    "@storybook/components": "8.0.2",
-    "@storybook/core-events": "8.0.2",
+    "@storybook/addon-essentials": "^8.0.6",
+    "@storybook/addon-interactions": "^8.0.6",
+    "@storybook/addon-links": "^8.0.6",
+    "@storybook/components": "8.0.6",
+    "@storybook/core-events": "8.0.6",
     "@storybook/icons": "^1.2.9",
     "@storybook/manager": "^8.0.5",
-    "@storybook/manager-api": "^8.0.2",
+    "@storybook/manager-api": "^8.0.6",
     "@storybook/preview": "^8.0.5",
     "@storybook/preview-api": "^8.0.5",
-    "@storybook/theming": "^8.0.2",
+    "@storybook/react": "^8.0.6",
+    "@storybook/react-vite": "^8.0.6",
+    "@storybook/theming": "^8.0.6",
     "@storybook/types": "^8.0.5",
+    "@types/node": "^20.12.5",
+    "@types/react": "^18.2.74",
+    "@types/react-dom": "^18.2.24",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "8.0.6",
     "tsup": "^8.0.0",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.4",
+    "vite": "^5.1.6"
   },
   "dependencies": {
     "@langchain/core": "^0.1.54",

@@ -12,3 +12,9 @@ package-lock.json
 
 # Tests
 __tests__
+
+.storybook
+stories
+vite.config.js
+
+.env

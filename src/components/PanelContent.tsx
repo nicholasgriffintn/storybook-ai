@@ -1,4 +1,5 @@
 import React from 'react';
+import { type API } from '@storybook/manager-api';
 import { themes, convert } from '@storybook/theming';
 import { Placeholder } from '@storybook/components';
 import { ChatOpenAI } from '@langchain/openai';
@@ -7,19 +8,25 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 
 import { helpPrompt } from '../ai/prompt';
 
+type PanelContentProps = {
+  api: API;
+  args: Record<string, any>;
+  provider: string;
+  apiKey: string;
+};
+
 /**
  * Checkout https://github.com/storybookjs/storybook/blob/next/code/addons/jest/src/components/Panel.tsx
  * for a real world example
  */
 export function PanelContent({
+  api,
   args,
   provider,
   apiKey,
-}: {
-  args: Record<string, any>;
-  provider: string;
-  apiKey: string;
-}) {
+}: PanelContentProps) {
+  const story = api.getCurrentStoryData();
+
   const [message, setMessage] = React.useState('');
   const [response, setResponse] = React.useState('');
 
@@ -62,26 +69,15 @@ export function PanelContent({
   });
   const outputParser = new StringOutputParser();
 
-  // TODO: Need to work out how to give the AI better context from Storybook
-  // Need some sort of JSON output from Storybook to give to the AI
-  // Example:
-  /*
-   * const stringifiedEvents = events
-  .map(
-    (event) => `"${event.name}": {
-      ${event.properties.map((property) => `properties."${property.name}": ${property.type}`).join(', ')}
-    }`
-  )
-  .join(', ')
-  .replace('$sent_at', 'timestamp');
-  */
-  const argsKeys = args ? Object.keys(args) : [];
-  const components = argsKeys.join(', ');
+  const storyData = {
+    ...story,
+    args,
+  };
 
-  const helpPromptGenerated = helpPrompt(components);
+  console.log(JSON.stringify(storyData, null, 2));
 
   const prompt = ChatPromptTemplate.fromMessages([
-    ['system', helpPromptGenerated],
+    ['system', helpPrompt],
     ['user', '{input}'],
   ]);
 
@@ -98,23 +94,27 @@ export function PanelContent({
           <h2>Chat with AI</h2>
           {response && <p>{response}</p>}
           <div>
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <button
-              type="button"
-              onClick={async () => {
+            <form
+              onSubmit={async (event) => {
+                event.preventDefault();
+
                 const result = await chain.invoke({
                   input: message,
+                  context: JSON.stringify(storyData, null, 2),
                 });
                 setResponse(result);
                 setMessage('');
               }}
             >
-              Send
-            </button>
+              <label htmlFor="message">Message</label>
+              <input
+                type="text"
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <button type="submit">Send</button>
+            </form>
           </div>
         </section>
       </Placeholder>

@@ -1,4 +1,6 @@
+import React from 'react';
 import { addons, types } from '@storybook/manager-api';
+
 import { ADDON_ID, PANEL_ID, PARAM_KEY } from './constants';
 import { Panel } from './Panel';
 
@@ -8,13 +10,13 @@ import { Panel } from './Panel';
  */
 
 // Register the addon
-addons.register(ADDON_ID, () => {
+addons.register(ADDON_ID, (api) => {
   // Register the panel
   addons.add(PANEL_ID, {
     type: types.PANEL,
     title: 'Storybook AI',
     match: ({ viewMode }) => viewMode === 'story',
-    render: Panel,
     paramKey: PARAM_KEY,
+    render: ({ active }) => (active ? <Panel api={api} /> : null),
   });
 });
