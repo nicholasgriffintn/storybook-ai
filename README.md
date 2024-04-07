@@ -6,6 +6,8 @@ At the moment, this is enitrely for investigational purposes and is not intended
 
 Alongside that, this is a personal project and is only shared for the purpose of code sharing and learning, please don't expect any support or updates.
 
+Also, to note: One of the biggest issues with this package is that it will leak your API key to the client, so please be careful with that.
+
 ## Installation
 
 Install the package:
