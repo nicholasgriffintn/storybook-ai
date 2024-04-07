@@ -40,7 +40,7 @@ const parameters = {
   ... // other parameters
   ai: {
     provider: 'openai',
-    apiKey: 'your-openai-api-key',
+    apiKey: process.env.OPENAI_API_KEY,
   },
 };
 ```
