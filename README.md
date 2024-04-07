@@ -26,15 +26,21 @@ const config: StorybookConfig = {
   // ...rest of config
   addons: [
     '@storybook/addon-essentials'
-    {
-      name: 'storybook-ai', // 👈 register the addon here
-      options: {
-        provider: 'openai',
-        apiKey: 'your-openai-api-key',
-      },
-    },
+    'storybook-ai', // 👈 register the addon here
   ],
 };
 
 export default config;
+```
+
+Then in your `.storybook/preview.js` file, add the following:
+
+```js
+const parameters = {
+  ... // other parameters
+  ai: {
+    provider: 'openai',
+    apiKey: 'your-openai-api-key',
+  },
+};
 ```

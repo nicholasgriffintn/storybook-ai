@@ -9,18 +9,12 @@
  * https://storybook.js.org/docs/react/writing-stories/decorators
  */
 import type { Renderer, ProjectAnnotations } from '@storybook/types';
-import { PROVIDER_NAME, PROVIDER_KEY } from './constants';
 
 /**
  * Note: if you want to use JSX in this file, rename it to `preview.tsx`
  * and update the entry prop in tsup.config.ts to use "src/preview.tsx",
  */
 
-const preview: ProjectAnnotations<Renderer> = {
-  globals: {
-    [PROVIDER_NAME]: 'openai',
-    [PROVIDER_KEY]: process.env.OPENAI_API_KEY,
-  },
-};
+const preview: ProjectAnnotations<Renderer> = {};
 
 export default preview;

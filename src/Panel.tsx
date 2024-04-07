@@ -3,7 +3,7 @@ import { AddonPanel } from '@storybook/components';
 import { useArgs, useParameter } from '@storybook/manager-api';
 
 import { PanelContent } from './components/PanelContent';
-import { PROVIDER_NAME, PROVIDER_KEY } from './constants';
+import { PARAM_KEY } from './constants';
 
 interface PanelProps {
   active: boolean;
@@ -11,12 +11,18 @@ interface PanelProps {
 
 export function Panel(props: PanelProps) {
   const [args] = useArgs();
-  const providerName = useParameter(PROVIDER_NAME, 'openai');
-  const providerKey = useParameter(PROVIDER_KEY, '');
+  const parameters = useParameter(PARAM_KEY, {
+    provider: 'openai',
+    apiKey: '',
+  });
+
+  console.log(parameters);
+
+  const { provider, apiKey } = parameters;
 
   return (
     <AddonPanel {...props}>
-      <PanelContent args={args} provider={providerName} apiKey={providerKey} />
+      <PanelContent args={args} provider={provider} apiKey={apiKey} />
     </AddonPanel>
   );
 }
