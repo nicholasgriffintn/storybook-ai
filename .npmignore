@@ -1,0 +1,14 @@
+# Turbo
+.turbo
+
+# NPM's lock file
+package-lock.json
+
+# Story files
+*.story.js
+*.stories.js
+*.stories.tsx
+*.stories.mdx
+
+# Tests
+__tests__
