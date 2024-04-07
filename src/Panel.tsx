@@ -1,7 +1,6 @@
 import React from 'react';
 import { AddonPanel } from '@storybook/components';
-import { useArgs } from '@storybook/manager-api';
-import { useGlobals } from '@storybook/manager-api';
+import { useArgs, useParameter } from '@storybook/manager-api';
 
 import { PanelContent } from './components/PanelContent';
 import { PROVIDER_NAME, PROVIDER_KEY } from './constants';
@@ -12,17 +11,12 @@ interface PanelProps {
 
 export function Panel(props: PanelProps) {
   const [args] = useArgs();
-  const [globals] = useGlobals();
-
-  // TODO: Figure out how we get config from storybook, not too sure,..
+  const providerName = useParameter(PROVIDER_NAME, 'openai');
+  const providerKey = useParameter(PROVIDER_KEY, '');
 
   return (
     <AddonPanel {...props}>
-      <PanelContent
-        args={args}
-        provider={globals[PROVIDER_NAME]}
-        apiKey={globals[PROVIDER_KEY]}
-      />
+      <PanelContent args={args} provider={providerName} apiKey={providerKey} />
     </AddonPanel>
   );
 }

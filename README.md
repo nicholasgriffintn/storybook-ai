@@ -26,7 +26,13 @@ const config: StorybookConfig = {
   // ...rest of config
   addons: [
     '@storybook/addon-essentials'
-    'storybook-ai', // 👈 register the addon here
+    {
+      name: 'storybook-ai', // 👈 register the addon here
+      options: {
+        provider: 'openai',
+        apiKey: 'your-openai-api-key',
+      },
+    },
   ],
 };
 
